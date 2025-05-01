@@ -1,1 +1,43 @@
-#inclue "../include/clnt.h"
+#include "../include/clnt.h"
+
+int get_request(char *url, char *port){
+	int sockfd, bindfd;
+	char *ptr, *host;
+	char getrequest[1024];
+	struct sockaddr_in addr;
+
+	if(isValidIP(url)){
+		sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
+	} else {
+		if((ptr == strstr(url, "/")) == NULL){
+			sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
+		} else {
+				strcpy(path, ptr);
+				host =strtok(url, "/");
+				sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
+		}
+	}
+
+	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if(sockfd < 0){
+		printf("Error creating the socket...\n");
+		exit(1);
+	}
+	printf("Socket created...\n");
+
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = inet_addr(url);
+	addr.sin_port = htons(atoi(port));
+	
+	if(connect(sockfd, (struct sockaddr *)&addr, sizeof(addr)) < 0){
+		printf("Connection Error!\n");
+		exit(1);
+	}
+	printf("Connection succesful...\n\n\n");
+	ptr = strtok(path, "/");
+	strcpy(path, ptr);
+	
+	write(sockfd, getrequest, strlen(getrequest));
+	return sockfd;
+}	
