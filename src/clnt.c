@@ -10,11 +10,11 @@ int get_request(char *url, char *port){
 		sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
 	} else {
 		if((ptr == strstr(url, "/")) == NULL){
-			sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
+		sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
 		} else {
-				strcpy(path, ptr);
-				host =strtok(url, "/");
-				sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
+		strcpy(path, ptr);
+		host =strtok(url, "/");
+		sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
 		}
 	}
 
@@ -67,4 +67,30 @@ int parseHeader(char *header){
 		if(status[i] == 0) return 1;
 	}
 	return 0;
+}
+
+char *splitKeyValue(char *line, int index){
+	char *temp;
+	if((temp = strstr(line, keys[index])) != NULL){
+		temp = temp + strlen(keys[index]);
+		status[index] = 1;
+	}
+	return temp;
+}
+
+void openFile(){
+	char *temp;
+	char command[100];
+	char fileName[1000];
+	strcpy(fileName, path);
+	if((temp == strstr(contentFileType, "text/html")) != NULL){
+		if((temp == strstr(fileName, ".txt")) != NULL){
+			sprintf(command, "vim %s\n", fileName);
+		} else {
+			sprintf(command, "/Applications/Opera.app/Contents/MacOS/opera", fileName);
+		}
+		system(command);
+	} else if((temp == strstr(contentFileType, "appication/pdf")) != NULL){
+		printf("The filetype %s is not supported.\n", contentType);
+	}
 }

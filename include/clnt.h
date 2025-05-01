@@ -19,7 +19,7 @@ char *splitKeyValue(char *line, int index);
 void openFile();
 
 FILE *fileptr;
-char key[][25] = {"Date: ", "Hostname: ", "Location: ", "Content-Type: "};
+char keys[][25] = {"Date: ", "Hostname: ", "Location: ", "Content-Type: "};
 char status[4] = {0, 0, 0, 0};
 char contentFileType[100];
 char path[1000];
