@@ -40,4 +40,31 @@ int get_request(char *url, char *port){
 	
 	write(sockfd, getrequest, strlen(getrequest));
 	return sockfd;
-}	
+}
+
+int isValidIP(char *ip){
+	struct sockaddr_in addr;
+	int valid = inet_pton(AF_INET, ip, &(addr.sin_addr));
+	return valid != 0;
+}
+
+int parseHeader(char *header){
+	char *line, *key, *value;
+	char temp[100];
+	int i = 0;
+	line = strtok(header, "\n");
+	while(line != NULL){
+		printf("%s\n", line);
+		strcpy(temp, line);
+		value = splitKeyValue(line, i);
+	if(i == 3){
+		strcpy(contentFileType, value);
+	}
+		line = strtok(NULL, "\n");
+		i++;
+	}
+	for(i=0; i < 4; i++){
+		if(status[i] == 0) return 1;
+	}
+	return 0;
+}
