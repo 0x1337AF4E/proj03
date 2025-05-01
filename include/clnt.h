@@ -19,8 +19,14 @@ char *splitKeyValue(char *line, int index);
 void openFile();
 
 FILE *fileptr;
+char *ptr, *host;
 char keys[][25] = {"Date: ", "Hostname: ", "Location: ", "Content-Type: "};
-char status[4] = {0, 0, 0, 0};
 char contentFileType[100];
 char path[1000];
+char *fileName;	
+char http_not_found[] = "HTTP/1.1 404 Not Found";
+char location[] = "Location: ";
+char contentType[] = "Content Type: ";
+char *line, *key, *value;
+char *host;
 #endif

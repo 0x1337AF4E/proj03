@@ -1,19 +1,19 @@
 #include "../include/clnt.h"
 
 int get_request(char *url, char *port){
-	int sockfd, bindfd;
-	char *ptr, *host;
+	int sockfd;
+	char *ptr;
 	char getrequest[1024];
 	struct sockaddr_in addr;
 
 	if(isValidIP(url)){
 		sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
 	} else {
-		if((ptr == strstr(url, "/")) == NULL){
+		if((ptr = strstr(url, "/")) == NULL){
 		sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
 		} else {
 		strcpy(path, ptr);
-		host =strtok(url, "/");
+		host = strtok(url, "/");
 		sprintf(getrequest, "GET / HTTP1.1\nHOST: %s\n\n", url);
 		}
 	}
@@ -49,7 +49,6 @@ int isValidIP(char *ip){
 }
 
 int parseHeader(char *header){
-	char *line, *key, *value;
 	char temp[100];
 	int i = 0;
 	line = strtok(header, "\n");
@@ -63,14 +62,15 @@ int parseHeader(char *header){
 		line = strtok(NULL, "\n");
 		i++;
 	}
-	for(i=0; i < 4; i++){
-		if(status[i] == 0) return 1;
-	}
+for(i=0; i < 4; i++){
+ if(status[i] == 0) return 1;
+}
 	return 0;
 }
 
 char *splitKeyValue(char *line, int index){
 	char *temp;
+	char status[4] = {0, 0, 0, 0};
 	if((temp = strstr(line, keys[index])) != NULL){
 		temp = temp + strlen(keys[index]);
 		status[index] = 1;
@@ -83,14 +83,14 @@ void openFile(){
 	char command[100];
 	char fileName[1000];
 	strcpy(fileName, path);
-	if((temp == strstr(contentFileType, "text/html")) != NULL){
-		if((temp == strstr(fileName, ".txt")) != NULL){
+	if((temp = strstr(contentFileType, "text/html")) != NULL){
+		if((temp = strstr(fileName, ".txt")) != NULL){
 			sprintf(command, "vim %s\n", fileName);
 		} else {
-			sprintf(command, "/Applications/Opera.app/Contents/MacOS/opera", fileName);
+			sprintf(command, "/Applications/Opera.app/Contents/MacOS/opera %s", fileName);
 		}
 		system(command);
-	} else if((temp == strstr(contentFileType, "appication/pdf")) != NULL){
-		printf("The filetype %s is not supported.\n", contentType);
+	} else if((temp = strstr(contentFileType, "appication/pdf")) != NULL){
+		printf("The filetype is not supported.\n");
 	}
 }
